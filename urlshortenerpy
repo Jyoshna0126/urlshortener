@@ -1,0 +1,32 @@
+import string
+import random
+class URLShortener:
+    def __init__(self):
+        self.base_url = 'https://myurlshortener.com/'
+        self.short_to_long = {}
+        self.long_to_short = {}
+
+    def shorten(self, long_url):
+        if long_url in self.long_to_short:
+            return self.base_url + self.long_to_short[long_url]
+
+        chars = string.ascii_letters + string.digits
+        short_code = ''.join(random.choice(chars) for _ in range(6))
+
+        while short_code in self.short_to_long:
+            short_code = ''.join(random.choice(chars) for _ in range(6))
+
+        short_url = self.base_url + short_code
+        self.short_to_long[short_code] = long_url
+        self.long_to_short[long_url] = short_code
+
+        return short_url
+
+
+shortener = URLShortener()
+
+long_url = input('Enter url required to be shortened:')
+short_url = shortener.shorten(long_url)
+
+print('Short URL:', short_url)
+
